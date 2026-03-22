@@ -250,3 +250,10 @@ def train() -> None:
         tensorboard_log="./tensorboard_logs/",
     )
 
+    # 5d. Train
+    model.learn(
+        total_timesteps=TOTAL_TIMESTEPS,
+        callback=[logger_cb, eval_cb, checkpoint_cb],
+        log_interval=10,
+    )
+
