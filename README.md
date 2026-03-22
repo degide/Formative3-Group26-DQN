@@ -78,6 +78,23 @@ python play.py --model best_model/best_model.zip --episodes 5 --render
 
 **Best Configuration:** Experiment 2 (High LR) achieved the highest best eval reward (377) with a strong mean reward, suggesting that a moderately higher learning rate accelerates convergence without destabilising training. Experiment 8 (Small Buffer) delivered the highest mean episode reward (255) but completed fewer episodes, indicating faster but potentially less generalisable learning.
 
+### Member: Harerimana Eginde
+
+| # | `lr` | `gamma` | `batch_size` | `ε_start` | `ε_end` | `ε_decay (fraction)` | Noted Behaviour |
+|---|------|---------|--------------|-----------|---------|----------------------|-----------------|
+| 1 | 3e-4 | 0.99 | 64 | 1.0 | 0.05 | 0.10 | Baseline config. Solid mean reward (186) with reasonable stability across 218 episodes. |
+| 2 | 1e-3 | 0.99 | 64 | 1.0 | 0.05 | 0.10 | Higher LR improved mean reward (196) and best eval (274) but increased wall-clock time noticeably. |
+| 3 | 5e-5 | 0.99 | 64 | 1.0 | 0.05 | 0.10 | Low LR yielded the best eval reward (442) among all experiments despite slower convergence. |
+| 4 | 3e-4 | 0.95 | 64 | 1.0 | 0.05 | 0.10 | Lower γ produced the highest mean (220) and max episode reward (875); agent prioritised immediate gains. |
+| 5 | 1e-4 | 0.99 | 128 | 1.0 | 0.01 | 0.10 | Large batch achieved a high max reward (940) but best eval dropped to 198.5; inconsistent generalisation. |
+| 6 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.30 | Longest exploration fraction produced the highest single-episode reward (1080) but lowest best eval (90.2). |
+| 7 | 1e-4 | 0.99 | 32 | 1.0 | 0.10 | 0.10 | High ε_end sustained random exploration too long; mean reward dropped and best eval remained low (96.9). |
+| 8 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Small buffer (10k) led to the highest mean reward (264) but fewest episodes (187); rapid policy turnover. |
+| 9 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Frequent target updates (every 500 steps) destabilised value estimates; lowest mean reward (170). |
+| 10 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | MlpPolicy on raw pixels produced the fastest run but worst best eval (58.7); CNN essential for visual input. |
+
+**Best Configuration:** Experiment 3 (Low LR) achieved the highest best eval reward (442), suggesting that slower, more careful weight updates lead to a more robust policy. Experiment 8 (Small Buffer) delivered the highest mean episode reward (264), though at the cost of fewer completed episodes and likely reduced sample diversity.
+
 ## Gameplay Demo
 
 [DEMO](./game_play/game_play.mp4)

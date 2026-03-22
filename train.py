@@ -2,9 +2,6 @@
 Deep Q-Network (DQN) Training Script
 Environment: ALE/SpaceInvaders-v5 (Atari)
 Framework: Stable Baselines3 + Gymnasium + ALE
-
-Runs 10 experiments by sweeping over hyperparameter configurations.
-Results are saved per-experiment and summarised in experiment_summary.csv.
 """
 
 import os
@@ -37,7 +34,7 @@ TOTAL_TIMESTEPS = 30_000   # Increase for better convergence (e.g., 1M–10M)
 
 # 10 EXPERIMENT CONFIGURATIONS
 EXPERIMENTS = [
-    # ── Experiment 1 ── Baseline (default hyperparameters) 
+    # Experiment 1: Baseline
     {
         "name":                    "exp01_baseline",
         "policy":                  "CnnPolicy",
@@ -52,11 +49,11 @@ EXPERIMENTS = [
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 2 ── Higher learning rate 
+    #  Experiment 2: Higher learning rate 
     {
         "name":                    "exp02_high_lr",
         "policy":                  "CnnPolicy",
-        "learning_rate":           5e-4,           # ← 1e-4 → 5e-4
+        "learning_rate":           5e-4,
         "gamma":                   0.99,
         "batch_size":              32,
         "exploration_fraction":    0.10,
@@ -67,11 +64,11 @@ EXPERIMENTS = [
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 3 ── Lower learning rate
+    #  Experiment 3: Lower learning rate
     {
         "name":                    "exp03_low_lr",
         "policy":                  "CnnPolicy",
-        "learning_rate":           1e-5,           # ← 1e-4 → 1e-5
+        "learning_rate":           1e-5,
         "gamma":                   0.99,
         "batch_size":              32,
         "exploration_fraction":    0.10,
@@ -82,12 +79,12 @@ EXPERIMENTS = [
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 4 ── Lower discount factor (γ)
+    #  Experiment 4: Lower discount factor (γ)
     {
         "name":                    "exp04_low_gamma",
         "policy":                  "CnnPolicy",
         "learning_rate":           1e-4,
-        "gamma":                   0.90,           # ← 0.99 → 0.90
+        "gamma":                   0.90,
         "batch_size":              32,
         "exploration_fraction":    0.10,
         "exploration_initial_eps": 1.0,
@@ -97,13 +94,13 @@ EXPERIMENTS = [
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    # Experiment 5 ── Larger batch size 
+    # Experiment 5: Larger batch size 
     {
         "name":                    "exp05_large_batch",
         "policy":                  "CnnPolicy",
         "learning_rate":           1e-4,
         "gamma":                   0.99,
-        "batch_size":              128,            # ← 32 → 128
+        "batch_size":              128,
         "exploration_fraction":    0.10,
         "exploration_initial_eps": 1.0,
         "exploration_final_eps":   0.01,
@@ -112,14 +109,14 @@ EXPERIMENTS = [
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 6 ── Extended exploration (ε decays over 30 % of run) ──
+    #  Experiment 6: Extended exploration (ε decays over 30 % of run) 
     {
         "name":                    "exp06_long_explore",
         "policy":                  "CnnPolicy",
         "learning_rate":           1e-4,
         "gamma":                   0.99,
         "batch_size":              32,
-        "exploration_fraction":    0.30,           # ← 0.10 → 0.30
+        "exploration_fraction":    0.30,
         "exploration_initial_eps": 1.0,
         "exploration_final_eps":   0.01,
         "buffer_size":             100_000,
@@ -127,7 +124,7 @@ EXPERIMENTS = [
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 7 ── Higher minimum exploration rate (ε_end) 
+    #  Experiment 7: Higher minimum exploration rate (ε_end) 
     {
         "name":                    "exp07_high_eps_end",
         "policy":                  "CnnPolicy",
@@ -136,13 +133,13 @@ EXPERIMENTS = [
         "batch_size":              32,
         "exploration_fraction":    0.10,
         "exploration_initial_eps": 1.0,
-        "exploration_final_eps":   0.10,           # ← 0.01 → 0.10
+        "exploration_final_eps":   0.10,
         "buffer_size":             100_000,
         "learning_starts":         10_000,
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 8 ── Smaller replay buffer 
+    #  Experiment 8: Smaller replay buffer 
     {
         "name":                    "exp08_small_buffer",
         "policy":                  "CnnPolicy",
@@ -152,12 +149,12 @@ EXPERIMENTS = [
         "exploration_fraction":    0.10,
         "exploration_initial_eps": 1.0,
         "exploration_final_eps":   0.01,
-        "buffer_size":             10_000,         # ← 100 000 → 10 000
-        "learning_starts":         1_000,          # ← adjusted so learning_starts < buffer_size
+        "buffer_size":             10_000,
+        "learning_starts":         1_000,
         "target_update_interval":  1_000,
         "train_freq":              4,
     },
-    #  Experiment 9 ── More frequent target-network updates 
+    #  Experiment 9: More frequent target-network updates 
     {
         "name":                    "exp09_freq_target_update",
         "policy":                  "CnnPolicy",
@@ -169,13 +166,13 @@ EXPERIMENTS = [
         "exploration_final_eps":   0.01,
         "buffer_size":             100_000,
         "learning_starts":         10_000,
-        "target_update_interval":  500,            # ← 1 000 → 500
+        "target_update_interval":  500,
         "train_freq":              4,
     },
-    #  Experiment 10 ── MlpPolicy (flattened obs, architecture ablation) ─
+    #  Experiment 10: MlpPolicy
     {
         "name":                    "exp10_mlp_policy",
-        "policy":                  "MlpPolicy",   # ← CnnPolicy → MlpPolicy
+        "policy":                  "MlpPolicy",
         "learning_rate":           1e-4,
         "gamma":                   0.99,
         "batch_size":              32,
@@ -190,8 +187,7 @@ EXPERIMENTS = [
 ]
 
 
-# CUSTOM LOGGING CALLBACK 
-
+# Custom logging callback
 class TrainingLogger(BaseCallback):
     """
     Lightweight callback that logs episode reward and length to the
@@ -391,7 +387,7 @@ def main() -> None:
     for i, cfg in enumerate(EXPERIMENTS, start=1):
         result = run_experiment(cfg, exp_index=i, total=len(EXPERIMENTS))
 
-        # ── Track the best model in memory (no disk write yet) ────────────
+        # Track the best model in memory (no disk write yet)
         if result["best_eval_reward"] > global_best_rew:
             global_best_rew  = result["best_eval_reward"]
             global_best_name = result["experiment"]
@@ -426,7 +422,7 @@ def main() -> None:
     print("=" * 70)
     ranked = sorted(all_results, key=lambda r: r["best_eval_reward"], reverse=True)
     for rank, r in enumerate(ranked, start=1):
-        marker = "  ◀ BEST" if r["experiment"] == global_best_name else ""
+        marker = "  < BEST" if r["experiment"] == global_best_name else ""
         print(
             f"  #{rank:>2}  {r['experiment']:<35}  "
             f"eval={r['best_eval_reward']:7.2f}  "

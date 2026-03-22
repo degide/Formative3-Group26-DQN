@@ -64,7 +64,7 @@ def evaluate_agent(
     os.makedirs(VIDEO_FOLDER, exist_ok=True)
     print(f"Videos will be saved to: {os.path.abspath(VIDEO_FOLDER)}\n")
 
-    # Evaluation loop — record each episode individually so every
+    # Evaluation loop. Record each episode individually so every
     # episode gets its own clearly named video file.
     episode_rewards = []
     episode_lengths = []

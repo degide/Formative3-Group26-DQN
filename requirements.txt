@@ -13,3 +13,4 @@ pygame>=2.5.0
 opencv-python>=4.8.0
 tqdm>=4.66.0
 rich>=13.0.0
+moviepy
