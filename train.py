@@ -266,3 +266,9 @@ def train() -> None:
     train_env.close()
     eval_env.close()
 
+    if __name__ == "__main__":
+    # Uncomment the line below to run a brief policy comparison first
+    # compare_policies(timesteps=50_000)
+
+    train()
+
