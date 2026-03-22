@@ -230,3 +230,23 @@ def train() -> None:
         verbose=1,
     )
 
+     # 5c. Instantiate the DQN model
+    model = DQN(
+        policy=HYPERPARAMS["policy"],
+        env=train_env,
+        learning_rate=HYPERPARAMS["learning_rate"],
+        gamma=HYPERPARAMS["gamma"],
+        batch_size=HYPERPARAMS["batch_size"],
+        exploration_fraction=HYPERPARAMS["exploration_fraction"],
+        exploration_initial_eps=HYPERPARAMS["exploration_initial_eps"],
+        exploration_final_eps=HYPERPARAMS["exploration_final_eps"],
+        buffer_size=HYPERPARAMS["buffer_size"],
+        learning_starts=HYPERPARAMS["learning_starts"],
+        target_update_interval=HYPERPARAMS["target_update_interval"],
+        train_freq=HYPERPARAMS["train_freq"],
+        optimize_memory_usage=False,
+        device="cpu",                    # Change if GPU is available
+        verbose=1,
+        tensorboard_log="./tensorboard_logs/",
+    )
+
