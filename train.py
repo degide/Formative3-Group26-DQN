@@ -257,3 +257,12 @@ def train() -> None:
         log_interval=10,
     )
 
+    # 5e. Save the final model
+    model.save(MODEL_SAVE_PATH)
+    print(f"\n[OK]  Model saved -> {MODEL_SAVE_PATH}.zip")
+    print(f"[OK]  Training log -> {os.path.join(SAVE_DIR, 'training_log.csv')}")
+    print(f"[OK]  Best model   -> {os.path.join(SAVE_DIR, 'best_model/best_model.zip')}\n")
+
+    train_env.close()
+    eval_env.close()
+
