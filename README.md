@@ -59,7 +59,13 @@ python play.py --model best_model/best_model.zip --episodes 5 --render
 | 9 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.20 | Slower ε decay allows more exploration; improved state-space coverage. |
 | 10 | 5e-4 | 0.99 | 64 | 1.0 | 0.02 | 0.15 | Combined tuning approach; second-best performance after baseline. |
 
+<<<<<<< HEAD
 **Best Configuration:** In Experiment 1 (Baseline), the default hyperparameters provided the most stable learning. Experiment 10 (Combined) showed that moderate tuning can approach baseline performance.
+=======
+> **Best Configuration:** Experiment 1 (Baseline) — the default hyperparameters provided the most stable learning. Experiment 10 (Combined) showed that moderate tuning can approach baseline performance.
+
+---
+>>>>>>> e5b552711529d249f400c2409cce457155bda79d
 
 ### Member: Nshimiye Emmy
 
@@ -74,6 +80,7 @@ python play.py --model best_model/best_model.zip --episodes 5 --render
 | 7 | 1e-4 | 0.99 | 32 | 1.0 | 0.10 | 0.10 | Higher ε_end kept exploration alive longer; reduced best eval (294) due to less exploitation. |
 | 8 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Small buffer (10k) forced rapid experience turnover; highest mean reward (255) but fewer episodes completed. |
 | 9 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | More frequent target updates (every 500 steps) destabilised training; lowest mean reward (163). |
+<<<<<<< HEAD
 | 10 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | MlpPolicy replacing CnnPolicy; fastest run (56s) but worst best eval (259). Raw pixels need convolutions. |
 
 **Best Configuration:** Experiment 2 (High LR) achieved the highest best eval reward (377) with a strong mean reward, suggesting that a moderately higher learning rate accelerates convergence without destabilising training. Experiment 8 (Small Buffer) delivered the highest mean episode reward (255) but completed fewer episodes, indicating faster but potentially less generalisable learning.
@@ -81,3 +88,8 @@ python play.py --model best_model/best_model.zip --episodes 5 --render
 ## Gameplay Demo
 
 [DEMO](./game_play/game_play.mp4)
+=======
+| 10 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | MlpPolicy replacing CnnPolicy; fastest run (56s) but worst best eval (259) — raw pixels need convolutions. |
+
+> **Best Configuration:** Experiment 2 (High LR) — achieved the highest best eval reward (377) with a strong mean reward, suggesting that a moderately higher learning rate accelerates convergence without destabilising training. Experiment 8 (Small Buffer) delivered the highest mean episode reward (255) but completed fewer episodes, indicating faster but potentially less generalisable learning.
+>>>>>>> e5b552711529d249f400c2409cce457155bda79d
