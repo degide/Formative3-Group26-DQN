@@ -191,7 +191,7 @@ def compare_policies(timesteps: int = 50_000) -> None:
           f"(mean reward = {results[winner]:.2f})\n")
 
 
-    # 5.  MAIN TRAINING ROUTINE
+# 5.  MAIN TRAINING ROUTINE
 
 def train() -> None:
     """
@@ -230,7 +230,7 @@ def train() -> None:
         verbose=1,
     )
 
-     # 5c. Instantiate the DQN model
+    # 5c. Instantiate the DQN model
     model = DQN(
         policy=HYPERPARAMS["policy"],
         env=train_env,
@@ -266,9 +266,9 @@ def train() -> None:
     train_env.close()
     eval_env.close()
 
-    if __name__ == "__main__":
+
+if __name__ == "__main__":
     # Uncomment the line below to run a brief policy comparison first
     # compare_policies(timesteps=50_000)
 
     train()
-
