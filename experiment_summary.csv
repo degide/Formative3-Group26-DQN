@@ -1,0 +1,11 @@
+experiment,policy,learning_rate,gamma,batch_size,exploration_fraction,exploration_final_eps,buffer_size,learning_starts,target_update_interval,train_freq,episodes_completed,mean_episode_reward,max_episode_reward,best_eval_reward,wall_clock_seconds
+exp01_baseline,CnnPolicy,0.0001,0.99,32,0.1,0.01,100000,10000,1000,4,213,176.4319,695.0,309.0,75.9
+exp02_high_lr,CnnPolicy,0.0005,0.99,32,0.1,0.01,100000,10000,1000,4,209,198.756,725.0,377.0,101.0
+exp03_low_lr,CnnPolicy,1e-05,0.99,32,0.1,0.01,100000,10000,1000,4,206,195.3398,650.0,285.0,107.2
+exp04_low_gamma,CnnPolicy,0.0001,0.9,32,0.1,0.01,100000,10000,1000,4,209,200.9091,650.0,270.0,116.7
+exp05_large_batch,CnnPolicy,0.0001,0.99,128,0.1,0.01,100000,10000,1000,4,218,185.9633,660.0,306.0,278.0
+exp06_long_explore,CnnPolicy,0.0001,0.99,32,0.3,0.01,100000,10000,1000,4,208,195.8654,840.0,312.0,108.7
+exp07_high_eps_end,CnnPolicy,0.0001,0.99,32,0.1,0.1,100000,10000,1000,4,212,186.3208,605.0,294.0,109.3
+exp08_small_buffer,CnnPolicy,0.0001,0.99,32,0.1,0.01,10000,1000,1000,4,188,255.3457,795.0,312.0,137.0
+exp09_freq_target_update,CnnPolicy,0.0001,0.99,32,0.1,0.01,100000,10000,500,4,212,163.2547,800.0,244.0,98.5
+exp10_mlp_policy,MlpPolicy,0.0001,0.99,32,0.1,0.01,100000,10000,1000,4,219,167.3744,670.0,259.0,56.0
