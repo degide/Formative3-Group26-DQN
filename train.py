@@ -190,3 +190,43 @@ def compare_policies(timesteps: int = 50_000) -> None:
     print(f"\n[OK]  Recommended policy: {winner} "
           f"(mean reward = {results[winner]:.2f})\n")
 
+
+    # 5.  MAIN TRAINING ROUTINE
+
+def train() -> None:
+    """
+    Instantiate and train the DQN agent, then save the model.
+    """
+    print("\n" + "=" * 60)
+    print(f"TRAINING DQN AGENT  —  {ENV_ID}")
+    print("=" * 60)
+    print("Hyperparameters:")
+    for k, v in HYPERPARAMS.items():
+        print(f"  {k:<30} = {v}")
+    print("=" * 60 + "\n")
+
+    # 5a. Build training and evaluation environments
+    train_env = make_env(n_envs=N_ENVS, seed=42)
+    eval_env  = make_env(n_envs=1,      seed=99)
+
+    # 5b. Define callbacks
+    logger_cb = TrainingLogger(log_path=os.path.join(SAVE_DIR, "training_log.csv"), verbose=1)
+
+    eval_cb = EvalCallback(
+        eval_env,
+        best_model_save_path=os.path.join(SAVE_DIR, "best_model"),
+        log_path=os.path.join(SAVE_DIR, "eval_logs"),
+        eval_freq=max(10_000 // N_ENVS, 1),
+        n_eval_episodes=5,
+        deterministic=True,
+        render=False,
+        verbose=1,
+    )
+
+    checkpoint_cb = CheckpointCallback(
+        save_freq=max(50_000 // N_ENVS, 1),
+        save_path=os.path.join(SAVE_DIR, "checkpoints"),
+        name_prefix="dqn_checkpoint",
+        verbose=1,
+    )
+
