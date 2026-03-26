@@ -4,4 +4,3 @@ __pycache__/
 tensorboard_logs/
 eval_logs/
 checkpoints/
-exp*/

@@ -81,19 +81,19 @@ python play.py --model best_model/best_model.zip --episodes 5 --render
 ### Member: Harerimana Eginde
 
 | # | `lr` | `gamma` | `batch_size` | `ε_start` | `ε_end` | `ε_decay (fraction)` | Noted Behaviour |
-|---|------|---------|--------------|-----------|---------|----------------------|-----------------|
-| 1 | 3e-4 | 0.99 | 64 | 1.0 | 0.05 | 0.10 | Baseline config. Solid mean reward (186) with reasonable stability across 218 episodes. |
-| 2 | 1e-3 | 0.99 | 64 | 1.0 | 0.05 | 0.10 | Higher LR improved mean reward (196) and best eval (274) but increased wall-clock time noticeably. |
-| 3 | 5e-5 | 0.99 | 64 | 1.0 | 0.05 | 0.10 | Low LR yielded the best eval reward (442) among all experiments despite slower convergence. |
-| 4 | 3e-4 | 0.95 | 64 | 1.0 | 0.05 | 0.10 | Lower γ produced the highest mean (220) and max episode reward (875); agent prioritised immediate gains. |
-| 5 | 1e-4 | 0.99 | 128 | 1.0 | 0.01 | 0.10 | Large batch achieved a high max reward (940) but best eval dropped to 198.5; inconsistent generalisation. |
-| 6 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.30 | Longest exploration fraction produced the highest single-episode reward (1080) but lowest best eval (90.2). |
-| 7 | 1e-4 | 0.99 | 32 | 1.0 | 0.10 | 0.10 | High ε_end sustained random exploration too long; mean reward dropped and best eval remained low (96.9). |
-| 8 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Small buffer (10k) led to the highest mean reward (264) but fewest episodes (187); rapid policy turnover. |
-| 9 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Frequent target updates (every 500 steps) destabilised value estimates; lowest mean reward (170). |
-| 10 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | MlpPolicy on raw pixels produced the fastest run but worst best eval (58.7); CNN essential for visual input. |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | 0.0001 | 0.99 | 32 | 1.0 | 0.01 | 0.1 | **Huge Buffer (500k):** Reduced overfitting to recent experiences. Yielded solid mean rewards (186.4) and a high peak evaluation (370.0), at the cost of slightly higher memory and wall-clock time (214.5s). |
+| **2** | 0.0001 | 0.99 | 32 | 1.0 | 0.01 | 0.1 | **Slow Target (5000 steps):** A more stable target network heavily benefited the CNN's convergence. Achieved the highest mean (198.6) and the highest best evaluation reward (406.0) overall. |
+| **3** | 0.0001 | 0.99 | 32 | 1.0 | 0.01 | 0.1 | **Fast Train (freq=1):** Training every single step drastically increased computation time (365.5s, the highest) without yielding superior rewards (Eval: 285.0). Shows diminishing returns on excessive gradient updates. |
+| **4** | 0.0001 | 0.99 | 32 | 1.0 | 0.01 | 0.1 | **Delayed Start (50k steps):** Waiting too long to start learning starved the agent of training steps. Resulted in the lowest mean reward (132.1) and a fast, but unproductive, run time (119.5s). |
+| **5** | 0.0001 | 0.999 | 32 | 1.0 | 0.01 | 0.1 | **High Gamma (0.999):** Forced the agent to heavily value long-term rewards. Resulted in excellent overall stability (Mean: 194.9) and a very high peak evaluation (371.0). |
+| **6** | 0.0001 | 0.99 | 16 | 1.0 | 0.01 | 0.1 | **Tiny Batch (16):** Halving the batch size likely introduced noise into the gradient updates, resulting in mediocre evaluation scores (264.0) and lower overall performance. |
+| **7** | 0.0001 | 0.99 | 32 | 1.0 | 0.01 | 0.02 | **Instant Decay (0.02 fraction):** Dropping epsilon too fast forced the agent to stop exploring too early, prematurely converging and stunting its peak performance (Eval: 285.0). |
+| **8** | 0.00025| 0.99 | 32 | 1.0 | 0.01 | 0.1 | **Mid LR (0.00025):** Increasing the learning rate caused instability in the network's weight updates, resulting in a noticeably lower best evaluation reward (250.0) compared to the baseline. |
+| **9** | 0.0001 | 0.99 | 32 | 1.0 | 0.2 | 0.1 | **Constant Explore (ε_end=0.2):** Keeping the final exploration rate at 20% crippled the exploitation phase. The agent acted randomly too often, yielding the worst evaluation reward (151.0). |
+| **10**| 0.0001 | 0.99 | 64 | 1.0 | 0.01 | 0.1 | **CNN Optimized (Batch 64):** Doubling the batch size provided highly consistent, stable learning (Mean: 192.9), though its absolute peak (270.0) didn't match the slower-target approach. |
 
-**Best Configuration:** Experiment 3 (Low LR) achieved the highest best eval reward (442), suggesting that slower, more careful weight updates lead to a more robust policy. Experiment 8 (Small Buffer) delivered the highest mean episode reward (264), though at the cost of fewer completed episodes and likely reduced sample diversity.
+**Best Configuration:** Experiment 2 (Slow Target) achieved the highest best_eval_reward at 406.0, meaning the final policy it learned outperformed all other configurations during evaluation. It secured the highest mean_episode_reward at 198.6, showing that it wasn't just a lucky run, but consistently performed well across episodes.
 
 ## Gameplay Demo
 
