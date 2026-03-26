@@ -46,20 +46,21 @@ python play.py --model best_model/best_model.zip --episodes 5 --render
 
 ### Member: James Jok Dut Akuei
 
-| # | `lr` | `gamma` | `batch_size` | `ε_start` | `ε_end` | `ε_decay (fraction)` | Noted Behaviour |
-|---|------|---------|--------------|-----------|---------|----------------------|-----------------|
-| 1 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Baseline config. Most stable performance among all experiments. |
-| 2 | 1e-3 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | Higher LR causes unstable Q-value updates; performance degraded significantly. |
-| 3 | 1e-5 | 0.99 | 32 | 1.0 | 0.01 | 0.10 | LR too low; learning extremely slow with minimal improvement observed. |
-| 4 | 1e-4 | 0.90 | 32 | 1.0 | 0.01 | 0.10 | Lower γ makes agent myopic; ignores future rewards, poor survival. |
-| 5 | 1e-4 | 0.999 | 32 | 1.0 | 0.01 | 0.10 | Higher γ enables long-term planning; steadier but slower learning curve. |
-| 6 | 1e-4 | 0.99 | 64 | 1.0 | 0.01 | 0.10 | Larger batch reduces gradient variance but results in fewer updates overall. |
-| 7 | 1e-4 | 0.99 | 16 | 1.0 | 0.01 | 0.10 | Smaller batch introduces noisy gradients; worst performance observed. |
-| 8 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.05 | Fast ε decay leads to premature exploitation with underdeveloped policy. |
-| 9 | 1e-4 | 0.99 | 32 | 1.0 | 0.01 | 0.20 | Slower ε decay allows more exploration; improved state-space coverage. |
-| 10 | 5e-4 | 0.99 | 64 | 1.0 | 0.02 | 0.15 | Combined tuning approach; second-best performance after baseline. |
+| # | `lr`    | `gamma` | `batch_size` | `ε_start` | `ε_end` | `ε_decay (fraction)` | Episodes | Mean Reward | Max Reward | Best Eval Reward | Noted Behaviour |
+|---|---------|---------|--------------|-----------|---------|----------------------|----------|-------------|------------|------------------|-----------------|
+| 1 | 1e-4    | 0.99    | 32           | 1.0       | 0.01    | 0.10                 | 213      | 182.11      | 685.0      | 407.0            | Baseline config. Stable and strong performance. |
+| 2 | 5e-4    | 0.99    | 32           | 1.0       | 0.01    | 0.10                 | 220      | 192.11      | 565.0      | 270.0            | Higher LR, faster learning but less stable. |
+| 3 | 1e-5    | 0.99    | 32           | 1.0       | 0.01    | 0.10                 | 207      | 182.61      | 735.0      | 134.0            | Very low LR, slow learning, poor eval. |
+| 4 | 1e-4    | 0.90    | 32           | 1.0       | 0.01    | 0.10                 | 210      | 200.52      | 805.0      | 290.0            | Lower gamma, more short-sighted agent. |
+| 5 | 1e-4    | 0.99    | 128          | 1.0       | 0.01    | 0.10                 | 210      | 199.90      | 665.0      | 433.0            | Large batch, steadier but slower updates. |
+| 6 | 1e-4    | 0.99    | 32           | 1.0       | 0.01    | 0.30                 | 209      | 189.76      | 745.0      | 313.0            | Longer exploration, improved coverage. |
+| 7 | 1e-4    | 0.99    | 32           | 1.0       | 0.10    | 0.10                 | 211      | 180.69      | 685.0      | 364.0            | Higher epsilon end, more exploration. |
+| 8 | 1e-4    | 0.99    | 32           | 1.0       | 0.01    | 0.10                 | 194      | 236.93      | 800.0      | 249.0            | Small buffer, high mean reward, fewer episodes. |
+| 9 | 1e-4    | 0.99    | 32           | 1.0       | 0.01    | 0.10                 | 215      | 172.77      | 665.0      | 194.0            | Frequent target updates, unstable. |
+|10 | 1e-4    | 0.99    | 32           | 1.0       | 0.01    | 0.10                 | 226      | 174.16      | 855.0      | 332.0            | MLP policy, fastest run, good max reward. |
 
-**Best Configuration:** In Experiment 1 (Baseline), the default hyperparameters provided the most stable learning. Experiment 10 (Combined) showed that moderate tuning can approach baseline performance.
+**Best Configuration:**
+The best evaluation reward was achieved by the baseline configuration (Experiment 1, best eval reward: 407.0), with strong mean and max rewards. Large batch size (Experiment 5) also performed well (best eval: 433.0). MLP policy (Experiment 10) achieved the highest max reward (855.0) but lower mean and eval rewards. Overall, the baseline (CnnPolicy, lr=1e-4, gamma=0.99, batch=32, eps decay=0.10) is recommended for stability and performance.
 
 ### Member: Nshimiye Emmy
 
